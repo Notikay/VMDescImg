@@ -1,0 +1,31 @@
+images:
+  path_to_dir: "./infrastructure/data/imgs"
+
+cap_model:
+  blip_name: 'blip'
+#  blip2_name: 'blip2'
+  download_blip_path: "Salesforce/blip-image-captioning-base"
+  save_blip_dir: "./infrastructure/data/cap_model/blip"
+  cache_blip_dir: "./infrastructure/cache/blip"
+#  download_blip2_path: "Salesforce/blip2-opt-2.7b"
+#  save_blip2_dir: "./infrastructure/data/cap_model/blip2"
+#  cache_blip2_dir: "./infrastructure/cache/blip2"
+  max_length: 100
+  min_length: 5
+  default_length: 50
+  step_length: 1
+
+translator:
+  apptrans_name: 'apptrans'
+  google_name: 'google'
+  lang: "ru"
+
+logs:
+  level_to_console: 'INFO'
+  level_to_file: 'DEBUG'
+  path_to_dir: "./infrastructure/logs"
+  gradio_folder: "gradio"
+  fastapi_folder: "fastapi"
+  filename: "app.log"
+  max_bytes: 1000000
+  backup_count: 5

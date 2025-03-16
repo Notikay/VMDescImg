@@ -1,0 +1,63 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  gradio:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: gradio_vmdescimg
+    env_file:
+      - .env
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+    ports:
+      - ${GRADIO_PORT}:${GRADIO_PORT}
+    volumes:
+      - data:/VMDescImg/infrastructure/data
+      - cache:/VMDescImg/infrastructure/cache
+    depends_on:
+      - postgres
+    command: sh -c "python3 ./build.py && python3 ./main.py --app=gradio"
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: fastapi_vmdescimg
+    env_file:
+      - .env
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+    ports:
+      - ${FASTAPI_PORT}:${FASTAPI_PORT}
+    volumes:
+      - data:/VMDescImg/infrastructure/data
+      - cache:/VMDescImg/infrastructure/cache
+    depends_on:
+      - postgres
+    command: sh -c "python3 ./build.py && python3 ./main.py --app=fastapi"
+
+volumes:
+  postgres_data:
+  data:
+  cache:
