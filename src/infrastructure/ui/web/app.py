@@ -104,7 +104,7 @@ def get_descript(
 def main() -> None:
     """ Запуск интерфейса."""
 
-    with gr.Blocks(css=CSS_PATH) as ui:
+    with gr.Blocks() as ui:
         gr.Markdown("# Сервис описания изображений")
 
         image = gr.Image(type="pil")
